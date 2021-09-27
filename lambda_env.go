@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
@@ -50,7 +50,7 @@ func get_envs(client lambda.Client, stage string, func_name string) (map[string]
 		FunctionName: aws.String(func_name),
 	})
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 		return nil, err
 	}
 	return output.Environment.Variables, nil
@@ -62,6 +62,7 @@ func update_envs(client lambda.Client, envs types.Environment, stage string, fun
 		Environment:  &envs,
 	})
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }

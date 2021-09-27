@@ -2,7 +2,8 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
+	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -21,7 +22,8 @@ func get_rule_names(client cloudwatchevents.Client) []string {
 		NamePrefix: aws.String("ddl-adiq-"),
 	})
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 	for _, rule := range output.Rules {
 		result = append(result, *rule.Name)
@@ -36,7 +38,8 @@ func disable_rules(client cloudwatchevents.Client, rule_names []string) {
 				Name: aws.String(rule_name),
 			})
 			if err != nil {
-				log.Fatal(err)
+				fmt.Println(err)
+				os.Exit(1)
 			}
 		}
 	}
